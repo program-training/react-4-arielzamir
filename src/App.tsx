@@ -1,11 +1,14 @@
 import "./App.css";
-import { Example } from "./components/Example/Example";
+import { TextProvider } from "./context/TextContent";
+import Grandpa from "./components/Grandpa/Grandpa";
 
 function App() {
   return (
-    <>
-      <Example />{" "}
-    </>
+    <div>
+      <TextProvider>
+        <Grandpa />
+      </TextProvider>
+    </div>
   );
 }
 
