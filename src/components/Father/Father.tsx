@@ -1,8 +1,10 @@
-import React, { useState } from "react";
-import { useTextContext } from "../../context/TextContent";
+import { useState, useContext } from "react";
+import { TextContext } from "../../context/TextContent";
 
 function Father() {
-  const { text, updateText } = useTextContext();
+  const contextValue = useContext(TextContext);
+  if (!contextValue) return null;
+  const { text, updateText } = contextValue;
   const [newText, setNewText] = useState("");
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {

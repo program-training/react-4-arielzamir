@@ -1,23 +1,27 @@
-import { createContext, useState, useContext, ReactNode } from "react";
+import { createContext, useState, ReactNode } from "react";
 
 type Theme = "light" | "dark";
 
 interface ThemeContextType {
-  theme: Theme;
-  toggleTheme: () => void;
+  theme: "light" | "dark";
+  toggleTheme: (newText: "light" | "dark") => void;
+}
+
+interface ThemeContextProviderProps {
+  children: ReactNode;
+  initialTheme: "light" | "dark";
 }
 
 export const ThemeContext = createContext<ThemeContextType | null>(null);
 
-interface ThemeProviderProps {
-  children: ReactNode;
-}
+export const ThemeProvider = ({
+  children,
+  initialTheme,
+}: ThemeContextProviderProps) => {
+  const [theme, setTheme] = useState<Theme>(initialTheme);
 
-export function ThemeProvider({ children }: ThemeProviderProps) {
-  const [theme, setTheme] = useState<Theme>("light");
-
-  const toggleTheme = () => {
-    setTheme((currentTheme) => (currentTheme === "light" ? "dark" : "light"));
+  const toggleTheme = (newText: "light" | "dark") => {
+    setTheme(newText === "light" ? "dark" : "light");
   };
 
   const contextValue: ThemeContextType = {
@@ -26,14 +30,10 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
   };
 
   return (
-    <ThemeContext.Provider value={contextValue}>
-      {children}
-    </ThemeContext.Provider>
+    <div>
+      <ThemeContext.Provider value={contextValue}>
+        {children}
+      </ThemeContext.Provider>
+    </div>
   );
-}
-
-export function useThemeContext() {
-  const context = useContext(ThemeContext);
-  if (!context) return null;
-  return context;
-}
+};
